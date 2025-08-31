@@ -1,0 +1,34 @@
+# Exclude large datasets (not needed for production)
+Fake.csv
+True.csv
+
+# Exclude development files
+Fake news detection.ipynb
+*.ipynb
+
+# Exclude git and local files
+.git/
+.gitignore
+.env
+.vscode/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# Exclude documentation (optional)
+README.md
+DEPLOYMENT_GUIDE.md
+GEMINI_SETUP.md
+SEARCH_API_SETUP.md
+LICENSE
+
+# Exclude local setup files
+setup.bat
+setup.py
+test_system.py
+env_template.txt
