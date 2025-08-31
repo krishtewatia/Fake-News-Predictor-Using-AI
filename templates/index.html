@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fake News Detection System - Created by Krish Tewatia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fallback styles to ensure the page looks good even if external CSS fails -->
+    <style>
+        /* Critical CSS fallback */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        .main-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .analysis-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .analyze-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 1rem 0;
+        }
+        .text-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 0.5rem;
+            min-height: 150px;
+            font-family: inherit;
+        }
+        .site-footer {
+            background: #212529;
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-decoration">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+    
+    <div class="container">
+        <!-- Professional Header -->
+        <header class="main-header">
+            <div class="header-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="brand-content">
+                    <h1 class="brand-title">AI Fake News Detection System</h1>
+                    <p class="brand-subtitle">Advanced Machine Learning for News Credibility Analysis</p>
+                    <div class="creator-badge">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Created by <strong>Krish Tewatia</strong></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features-showcase">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>99% ML Accuracy</h3>
+                        <p>Advanced AI algorithms</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Source Verification</h3>
+                        <p>Cross-reference validation</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Real-time Analysis</h3>
+                        <p>Instant results</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Credibility Scoring</h3>
+                        <p>Multi-dimensional assessment</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Analysis Section -->
+        <main class="analysis-section">
+            <div class="section-header">
+                <h2><i class="fas fa-microscope"></i> News Analysis Center</h2>
+                <p>Enter text or URL below to verify news authenticity with our advanced AI system</p>
+            </div>
+            
+            <div class="analysis-container">
+                <!-- Input Mode Tabs -->
+                <div class="input-tabs">
+                    <button class="tab-button active" onclick="switchTab('text')">
+                        <i class="fas fa-file-text"></i>
+                        <span>Analyze Text</span>
+                    </button>
+                    <button class="tab-button" onclick="switchTab('url')">
+                        <i class="fas fa-link"></i>
+                        <span>Analyze URL</span>
+                    </button>
+                </div>
+
+                <!-- Text Input Panel -->
+                <div id="text-tab" class="input-panel">
+                    <div class="input-group">
+                        <label class="input-label" for="news-text">
+                            <i class="fas fa-edit"></i>
+                            News Content
+                        </label>
+                        <textarea id="news-text" class="text-input" placeholder="Paste the news article or statement you want to verify... Our AI will analyze the content for credibility, fact-check against reliable sources, and provide a comprehensive assessment."></textarea>
+                    </div>
+                </div>
+
+                <!-- URL Input Panel -->
+                <div id="url-tab" class="input-panel hidden">
+                    <div class="input-group">
+                        <label class="input-label" for="news-url">
+                            <i class="fas fa-globe"></i>
+                            News Article URL
+                        </label>
+                        <input type="url" id="news-url" class="url-input" placeholder="https://example.com/news-article">
+                    </div>
+                </div>
+
+                <!-- Analysis Options -->
+                <div class="options-section">
+                    <h3 class="options-title">
+                        <i class="fas fa-cogs"></i>
+                        Analysis Configuration
+                    </h3>
+                    <div class="options-grid">
+                        <div class="option-card">
+                            <div class="option-header">
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="verify-sources" checked>
+                                    <label for="verify-sources" class="checkbox-label">
+                                        <i class="fas fa-search"></i>
+                                        Internet Source Verification
+                                    </label>
+                                </div>
+                            </div>
+                            <p class="option-description">Cross-check claims with reliable news sources and fact-checkers</p>
+                        </div>
+                        <div class="option-card">
+                            <div class="option-header">
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="detailed-analysis" checked>
+                                    <label for="detailed-analysis" class="checkbox-label">
+                                        <i class="fas fa-brain"></i>
+                                        Advanced AI Analysis
+                                    </label>
+                                </div>
+                            </div>
+                            <p class="option-description">Include sentiment analysis, bias detection, and credibility scoring</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button class="analyze-btn" onclick="analyzeNews()">
+                    <div class="btn-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <span class="btn-text">Analyze News Article</span>
+                    <div class="btn-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </button>
+
+                <!-- Results Container -->
+                <div id="results" class="results-section hidden">
+                    <!-- Results will be populated here by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Professional Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>AI Fake News Detection</span>
+                    </div>
+                    <p class="footer-description">
+                        Empowering truth through advanced AI technology. 
+                        Fight misinformation with reliable, accurate news verification.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Technology</h4>
+                        <ul>
+                            <li><i class="fas fa-robot"></i> Machine Learning</li>
+                            <li><i class="fas fa-brain"></i> Natural Language Processing</li>
+                            <li><i class="fas fa-network-wired"></i> Deep Neural Networks</li>
+                            <li><i class="fas fa-chart-line"></i> Statistical Analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Features</h4>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Real-time Analysis</li>
+                            <li><i class="fas fa-search"></i> Source Verification</li>
+                            <li><i class="fas fa-percentage"></i> Accuracy Scoring</li>
+                            <li><i class="fas fa-shield-check"></i> Bias Detection</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Creator</h4>
+                        <div class="creator-info">
+                            <div class="creator-avatar">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="creator-details">
+                                <h5>Krish Tewatia</h5>
+                                <p>AI & Machine Learning Developer</p>
+                                <div class="creator-skills">
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">ML/AI</span>
+                                    <span class="skill-tag">NLP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright-section">
+                    <div class="copyright-text">
+                        <i class="fas fa-copyright"></i>
+                        <span>2024 AI Fake News Detection System. All rights reserved.</span>
+                    </div>
+                    <div class="creator-credit">
+                        <i class="fas fa-code"></i>
+                        <span>Developed with ❤️ by <strong>Krish Tewatia</strong></span>
+                    </div>
+                </div>
+                
+                <div class="footer-tech-badges">
+                    <div class="tech-badge">
+                        <i class="fab fa-python"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="tech-badge">
+                        <i class="fas fa-brain"></i>
+                        <span>Scikit-learn</span>
+                    </div>
+                    <div class="tech-badge">
+                        <i class="fas fa-flask"></i>
+                        <span>Flask</span>
+                    </div>
+                    <div class="tech-badge">
+                        <i class="fab fa-js-square"></i>
+                        <span>JavaScript</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    
+    <!-- Initialization script -->
+    <script>
+        // Ensure the page is properly initialized
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 AI Fake News Detection System loaded successfully!');
+            console.log('📱 Created by Krish Tewatia');
+            
+            // Initialize default tab
+            if (typeof switchTab === 'function') {
+                switchTab('text');
+            }
+            
+            // Add some interactive feedback
+            const analyzeBtn = document.querySelector('.analyze-btn');
+            if (analyzeBtn) {
+                analyzeBtn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                analyzeBtn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            }
+            
+            // Show a welcome message
+            setTimeout(() => {
+                if (typeof showAlert === 'function') {
+                    showAlert('Welcome to AI Fake News Detection System! 🎉', 'success');
+                }
+            }, 1000);
+        });
+        
+        // Demo function for testing (can be removed in production)
+        function testDemo() {
+            const demoText = "Breaking: Scientists discover new method to detect misinformation using advanced AI algorithms and machine learning techniques.";
+            document.getElementById('news-text').value = demoText;
+            if (typeof showAlert === 'function') {
+                showAlert('Demo text loaded! Click "Analyze News Article" to test the system.', 'info');
+            }
+        }
+        
+        // Add demo button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create a demo button
+            const demoBtn = document.createElement('button');
+            demoBtn.innerHTML = '🎭 Load Demo Text';
+            demoBtn.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                padding: 0.5rem 1rem;
+                background: #17a2b8;
+                color: white;
+                border: none;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                font-size: 0.9rem;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            `;
+            demoBtn.onclick = testDemo;
+            document.body.appendChild(demoBtn);
+        });
+    </script>
+</body>
+</html>

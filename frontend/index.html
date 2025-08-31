@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Enhanced Fake News Detection System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Enhanced Fake News Detection</h1>
+                <span class="version">v2.0 - Real-Time Verification</span>
+            </div>
+            <div class="system-status" id="system-status">
+                <div class="status-indicator">
+                    <i class="fas fa-circle" id="status-icon"></i>
+                    <span id="status-text">Checking system...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Analysis Section -->
+    <main class="analysis-section">
+        <div class="section-header">
+            <h2><i class="fas fa-microscope"></i> News Analysis Center</h2>
+            <p>Enter text or URL below to verify news authenticity with our advanced AI system</p>
+        </div>
+        
+        <div class="analysis-container">
+            <!-- Input Mode Tabs -->
+            <div class="input-tabs">
+                <button class="tab-button active" onclick="switchTab('text')">
+                    <i class="fas fa-file-text"></i>
+                    <span>Analyze Text</span>
+                </button>
+                <button class="tab-button" onclick="switchTab('url')">
+                    <i class="fas fa-link"></i>
+                    <span>Analyze URL</span>
+                </button>
+            </div>
+
+            <!-- Text Input Panel -->
+            <div id="text-tab" class="input-panel">
+                <div class="input-group">
+                    <label class="input-label" for="news-text">
+                        <i class="fas fa-edit"></i>
+                        News Content
+                    </label>
+                    <textarea id="news-text" class="text-input" placeholder="Paste the news article or statement you want to verify... Our AI will analyze the content for credibility, fact-check against reliable sources, and provide a comprehensive assessment."></textarea>
+                </div>
+            </div>
+
+            <!-- URL Input Panel -->
+            <div id="url-tab" class="input-panel hidden">
+                <div class="input-group">
+                    <label class="input-label" for="news-url">
+                        <i class="fas fa-globe"></i>
+                        News Article URL
+                    </label>
+                    <input type="url" id="news-url" class="url-input" placeholder="https://example.com/news-article">
+                </div>
+            </div>
+
+            <!-- Analysis Options -->
+            <div class="options-section">
+                <h3 class="options-title">
+                    <i class="fas fa-cogs"></i>
+                    Analysis Configuration
+                </h3>
+                <div class="options-grid">
+                    <div class="option-card">
+                        <div class="option-header">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="verify-sources" checked>
+                                <label for="verify-sources" class="checkbox-label">
+                                    <i class="fas fa-search"></i>
+                                    Find Related Sources
+                                </label>
+                            </div>
+                        </div>
+                        <p class="option-description">Search for related articles and cross-reference sources</p>
+                    </div>
+                    <div class="option-card">
+                        <div class="option-header">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="detailed-analysis" checked>
+                                <label for="detailed-analysis" class="checkbox-label">
+                                    <i class="fas fa-brain"></i>
+                                    AI Deep Analysis
+                                </label>
+                            </div>
+                        </div>
+                        <p class="option-description">Enable advanced AI reasoning and detailed explanations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analyze Button -->
+            <button class="analyze-btn" onclick="analyzeNews()">
+                <span class="btn-content">
+                    <i class="fas fa-play btn-icon"></i>
+                    <span class="btn-text">Analyze News Article</span>
+                    <div class="btn-loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Analyzing...</span>
+                    </div>
+                </span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </main>
+
+    <!-- Results Section -->
+    <section id="results" class="results-section hidden">
+        <div class="results-content" id="results-content">
+            <!-- Results will be populated here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-info-circle"></i> About This System</h4>
+                <p>Advanced fake news detection using machine learning, real-time fact-checking, and AI-powered analysis to verify news authenticity.</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-cogs"></i> Features</h4>
+                <ul>
+                    <li><i class="fas fa-check"></i> Real-time fact verification</li>
+                    <li><i class="fas fa-check"></i> AI-powered content analysis</li>
+                    <li><i class="fas fa-check"></i> Source credibility assessment</li>
+                    <li><i class="fas fa-check"></i> Multi-language support</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-shield-alt"></i> Technology Stack</h4>
+                <ul>
+                    <li><i class="fas fa-robot"></i> Machine Learning Models</li>
+                    <li><i class="fas fa-brain"></i> Google Gemini AI</li>
+                    <li><i class="fas fa-search"></i> Real-time Search APIs</li>
+                    <li><i class="fas fa-code"></i> Advanced NLP Processing</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Enhanced Fake News Detection System. Built with ❤️ for truth and transparency.</p>
+        </div>
+    </footer>
+
+    <!-- Alert Container -->
+    <div id="alert-container" class="alert-container"></div>
+
+    <script src="main.js"></script>
+</body>
+</html>
