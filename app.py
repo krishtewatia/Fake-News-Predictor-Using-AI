@@ -7,7 +7,6 @@ import pandas as pd
 import re
 import requests
 from bs4 import BeautifulSoup
-import nltk
 import json
 import hashlib
 import time
@@ -16,6 +15,10 @@ from datetime import datetime
 from collections import Counter
 from urllib.parse import urlparse
 import logging
+
+# Configure logging early
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Try to import optional dependencies
 try:
@@ -58,11 +61,6 @@ try:
     load_dotenv()
 except Exception:
     pass
-
-# Configure logging early
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Safe NLTK import and setup
 try:
@@ -2031,6 +2029,17 @@ def load_models():
         logger.error(f"❌ Error loading models: {str(e)}")
         return False
 
+def ensure_models_loaded():
+    """Ensure models are loaded (lazy loading for gunicorn)"""
+    global model, vectorizer, stop_words, ai_analyzer, article_extractor, credibility_scorer, news_source_finder, fact_verifier, real_time_verifier
+    
+    if model is None or vectorizer is None:
+        logger.info("🔄 Loading models for first request...")
+        if not load_models():
+            logger.error("❌ Failed to load models on demand")
+            return False
+    return True
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -2039,6 +2048,10 @@ def home():
 def analyze():
     """Main analysis endpoint with enhanced real-time fact checking"""
     try:
+        # Ensure models are loaded
+        if not ensure_models_loaded():
+            return jsonify({'error': 'System not ready - models failed to load'}), 503
+            
         data = request.get_json()
         if not data:
             return jsonify({'error': 'No data provided'}), 400
@@ -2259,11 +2272,6 @@ if __name__ == '__main__':
         app.run(debug=debug_flag, host='0.0.0.0', port=server_port)
     else:
         print("❌ Failed to load models")
-else:
-    # For gunicorn/production: Load models when imported
-    try:
-        # Load models for production
-        if not load_models():
-            logger.error("❌ Failed to load models in production mode")
-    except Exception as e:
-        logger.error(f"❌ Error in production initialization: {str(e)}")
+
+# For gunicorn/production: Don't load models during import
+# Models will be loaded lazily on first request
