@@ -195,15 +195,11 @@ Fake-News-Predictor-Using-AI/
 ├── setup.py                   # Automated setup script
 ├── setup.bat                  # Windows setup script
 ├── env_template.txt           # Environment variables template
-├── templates/                 # HTML templates
+├── templates/                 # Flask HTML templates
 │   └── index.html            # Main web interface
-├── static/                   # Static assets
+├── static/                   # Flask static assets
 │   ├── styles.css           # Application styles
 │   └── main.js              # Frontend JavaScript
-├── frontend/                 # Standalone frontend
-│   ├── index.html           # Standalone HTML
-│   ├── styles.css           # Standalone styles
-│   └── main.js              # Standalone JavaScript
 ├── Fake.csv                  # Fake news dataset
 ├── True.csv                  # True news dataset
 ├── Fake news detection.ipynb # Jupyter notebook for model training
