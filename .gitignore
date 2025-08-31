@@ -54,6 +54,17 @@ config.py
 # API Keys and secrets
 secrets.json
 credentials.json
+.env*
+config.py
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Temporary files that might contain sensitive data
+*.tmp
+*.temp
+.DS_Store
 
 # Jupyter Notebook
 .ipynb_checkpoints
