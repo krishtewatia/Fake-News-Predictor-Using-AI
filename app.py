@@ -59,11 +59,30 @@ try:
 except Exception:
     pass
 
-from nltk.corpus import stopwords
-
-# Configure logging
+# Configure logging early
+import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Safe NLTK import and setup
+try:
+    import nltk
+    from nltk.corpus import stopwords
+    # Try to access stopwords to check if data is available
+    try:
+        stopwords.words('english')
+        NLTK_READY = True
+    except:
+        # Download if not available
+        try:
+            nltk.download('stopwords', quiet=True)
+            NLTK_READY = True
+        except:
+            NLTK_READY = False
+            logger.warning("⚠️ NLTK stopwords not available, using fallback")
+except:
+    NLTK_READY = False
+    logger.warning("⚠️ NLTK not available, using basic stopwords")
 
 app = Flask(__name__)
 
@@ -1963,9 +1982,12 @@ def load_models():
                 stop_words = components['stop_words']
         except:
             try:
-                stop_words = set(stopwords.words('english'))
+                if NLTK_READY:
+                    stop_words = set(stopwords.words('english'))
+                else:
+                    stop_words = set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'])
             except:
-                stop_words = set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at'])
+                stop_words = set(['the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'])
 
         # Initialize components
         ai_analyzer = AIAnalyzer(GEMINI_API_KEY)
@@ -2220,11 +2242,6 @@ def health():
     })
 
 if __name__ == '__main__':
-    try:
-        nltk.download('stopwords', quiet=True)
-    except:
-        logger.warning("Could not download NLTK stopwords")
-
     if load_models():
         print("🚀 Starting Enhanced Fake News Detection System with Real-Time Verification...")
         # Respect PORT env for platforms like Render/Heroku
@@ -2233,8 +2250,8 @@ if __name__ == '__main__':
         print("\n✅ Features available:")
         print(f"  🤖 ML Classification: {model is not None}")
         print(f"  🧠 AI Analysis: {bool(ai_analyzer and ai_analyzer.model is not None)}")
-        print(f"  � Fact Verification: {fact_verifier is not None}")
-        print(f"  �📰 Article Extraction: {article_extractor is not None}")
+        print(f"  📝 Fact Verification: {fact_verifier is not None}")
+        print(f"  📰 Article Extraction: {article_extractor is not None}")
         print(f"  🔍 Advanced NLP: {SPACY_AVAILABLE}")
         # Allow toggling debug via env (FLASK_DEBUG=true/false)
         debug_env = os.getenv("FLASK_DEBUG", "true").lower()
@@ -2242,3 +2259,11 @@ if __name__ == '__main__':
         app.run(debug=debug_flag, host='0.0.0.0', port=server_port)
     else:
         print("❌ Failed to load models")
+else:
+    # For gunicorn/production: Load models when imported
+    try:
+        # Load models for production
+        if not load_models():
+            logger.error("❌ Failed to load models in production mode")
+    except Exception as e:
+        logger.error(f"❌ Error in production initialization: {str(e)}")
