@@ -21,8 +21,8 @@ Deploy your fake news detection system completely FREE using:
 
 3. **Environment Variables**:
    ```
-   GEMINI_API_KEY=AIzaSyC7MYNyXveiN6A4HCLgIB-VnKTtydOu9ww
-   SERPAPI_KEY=5bf190b0e4fe6fadbb502d1be90fa2c196130966281f8b608a1730456ae64fde
+   GEMINI_API_KEY=your_actual_gemini_api_key_here
+   SERPAPI_KEY=your_actual_serpapi_key_here
    PORT=5000
    ```
 
